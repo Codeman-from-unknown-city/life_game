@@ -1,0 +1,37 @@
+//
+// Created by user on 25.11.2020.
+//
+#include <stdio.h>
+
+#include "bmp.h"
+#include "read-write/read-write.h"
+#include "../utils/safe/safe.h"
+
+#define SIZE_OF_COLOR_PALETTE 8
+
+bmp_t
+read_bmp(FILE* bmp_f)
+{
+  bmp_t bmp;
+  read_write_bmp_part(fread, &bmp.fheader, sizeof(BITMAPFILEHEADER), bmp_f, "can't read bitmap file header");
+  read_write_bmp_part(fread, &bmp.info_header, sizeof(BITMAPINFOHEADER), bmp_f, "can't read bitmap info header");
+  read_write_bmp_part(fread, &bmp.color_palette, SIZE_OF_COLOR_PALETTE, bmp_f, "can't read bitmap color palette");
+  fseek(bmp_f, bmp.fheader.bfOffBits, SEEK_SET);
+  bmp.image = safe_malloc(bmp.info_header.biSizeImage);
+  read_write_bmp_part(fread, bmp.image, bmp.info_header.biSizeImage, bmp_f, "can't read image");
+  return bmp;
+}
+
+void
+write_bmp(FILE* f, bmp_t* bmp)
+{
+  read_write_bmp_part((size_t (*)(void*, size_t, size_t, FILE*)) fwrite,
+                      &bmp->fheader, sizeof(BITMAPFILEHEADER), f, "can't write bitmap file header");
+  read_write_bmp_part((size_t (*)(void*, size_t, size_t, FILE*)) fwrite,
+                      &bmp->info_header, sizeof(BITMAPINFOHEADER), f, "can't write bitmap info");
+  read_write_bmp_part((size_t (*)(void*, size_t, size_t, FILE*)) fwrite,
+                      &bmp->color_palette, SIZE_OF_COLOR_PALETTE, f, " d");
+  fseek(f, bmp->fheader.bfOffBits, SEEK_SET);
+  read_write_bmp_part((size_t (*)(void*, size_t, size_t, FILE*)) fwrite,
+                      bmp->image, bmp->info_header.biSizeImage, f, "can't write image");
+}
