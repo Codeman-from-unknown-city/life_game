@@ -1,10 +1,9 @@
-//
-// Created by sergei on 24.11.2020.
-//
+#pragma once
+
 #include <stdlib.h>
 #include <stdio.h>
 
-#pragma once
+#define safe_free(ptr) __safe_free((void **) &(ptr))
 
 FILE*
 safe_fopen(const char* fname, const char* mode);
@@ -13,4 +12,5 @@ void*
 safe_malloc(size_t size);
 
 void
-safe_free(void** ptr);
+__safe_free(void** ptr);
+

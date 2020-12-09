@@ -1,11 +1,9 @@
-//
-// Created by user on 25.11.2020.
-//
 #include <Windows.h>
 #include <stdbool.h>
-
 #include "field.h"
 #include "../utils/safe/safe.h"
+
+typedef char** generation;
 
 static char**
 create_2d_char_arr(int rows, int columns)
@@ -17,10 +15,10 @@ create_2d_char_arr(int rows, int columns)
  return arr_2d;
 }
 
-char**
-create_initial_game_field(const unsigned char* buf, BITMAPINFOHEADER* info)
+generation
+get_first_gen(const unsigned char* buf, BITMAPINFOHEADER* info)
 {
-  char** game_field = create_2d_char_arr(info->biHeight, info->biWidth);
+  generation first_gen = create_2d_char_arr(info->biHeight, info->biWidth);
   int row = 0, col = 0;
   for (int i = 0; i < info->biSizeImage; i++)
     {
@@ -30,13 +28,13 @@ create_initial_game_field(const unsigned char* buf, BITMAPINFOHEADER* info)
           col = 0;
         }
       for (int j = 7; j >= 0; j--)
-        game_field[row][col++] = !(buf[i] >> j & 0x01);
+        first_gen[row][col++] = !(buf[i] >> j & 0x01);
     }
-  return game_field;
+  return first_gen;
 }
 
 static int
-calc_n_neighbors(char** game_field, int i, int j, int h, int w)
+calc_n_neighbors(generation gen, int i, int j, int h, int w)
 {
   bool is_not_bottom_edge = i != 0;
   bool is_not_top_edge = i != h - 1;
@@ -45,49 +43,49 @@ calc_n_neighbors(char** game_field, int i, int j, int h, int w)
   int n_neighbors = 0;
   if (is_not_top_edge)
     {
-      n_neighbors += game_field[i + 1][j];
+      n_neighbors += gen[i + 1][j];
       if (is_not_left_edge)
-        n_neighbors += game_field[i + 1][j - 1];
+        n_neighbors += gen[i + 1][j - 1];
       if (is_not_right_edge)
-        n_neighbors += game_field[i + 1][j + 1];
+        n_neighbors += gen[i + 1][j + 1];
     }
   if (is_not_bottom_edge)
     {
-      n_neighbors += game_field[i - 1][j];
+      n_neighbors += gen[i - 1][j];
       if (is_not_left_edge)
-        n_neighbors += game_field[i - 1][j - 1];
+        n_neighbors += gen[i - 1][j - 1];
       if (is_not_right_edge)
-        n_neighbors += game_field[i - 1][j + 1];
+        n_neighbors += gen[i - 1][j + 1];
     }
   if (is_not_left_edge)
-    n_neighbors += game_field[i][j - 1];
+    n_neighbors += gen[i][j - 1];
   if (is_not_right_edge)
-    n_neighbors += game_field[i][j + 1];
+    n_neighbors += gen[i][j + 1];
   return n_neighbors;
 }
 
-char**
-generate_next_gen(char** game_field, BITMAPINFOHEADER* info)
+generation
+generate_next_gen(generation gen, BITMAPINFOHEADER* info)
 {
-  char** next_gen = create_2d_char_arr(info->biHeight, info->biWidth);
+  generation next_gen = create_2d_char_arr(info->biHeight, info->biWidth);
   for (int i = 0; i < info->biHeight; i++)
       for (int j = 0; j < info->biWidth; j++)
         {
-          int n_neighbors = calc_n_neighbors(game_field, i, j, info->biHeight, info->biWidth);
-          next_gen[i][j] = game_field[i][j] == 1 ? n_neighbors >= 2 && n_neighbors <= 3 : n_neighbors == 3;
+          int n_neighbors = calc_n_neighbors(gen, i, j, info->biHeight, info->biWidth);
+          next_gen[i][j] = gen[i][j] == 1 ? n_neighbors >= 2 && n_neighbors <= 3 : n_neighbors == 3;
         }
   return next_gen;
 }
 
 void
-free_game_field(char** game_field)
+free_gen(generation gen)
 {
-  safe_free((void**) &game_field);
-  safe_free((void**) game_field);
+  safe_free(*gen);
+  safe_free(gen);
 }
 
 void
-pack(bmp_t* bmp, char** game_field)
+pack(bmp_t* bmp, generation gen)
 {
   int k = -1;
   for (int i = 0; i < bmp->info_header.biHeight; i++)
@@ -99,7 +97,8 @@ pack(bmp_t* bmp, char** game_field)
             k++;
             bmp->image[k] = 0;
           }
-        if (game_field[i][j] == 0)
+        if (gen[i][j] == 0)
           bmp->image[k] |= 1 << (7 - modulo_8);
       }
 }
+

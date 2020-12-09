@@ -1,6 +1,3 @@
-//
-// Created by sergei on 24.11.2020.
-//
 #include "safe.h"
 #include "../log.h"
 
@@ -29,10 +26,11 @@ safe_malloc(size_t size)
 }
 
 void
-safe_free(void** ptr)
+__safe_free(void** ptr)
 {
   if (ptr == NULL)
     return;
   free(*ptr);
   *ptr = NULL;
 }
+

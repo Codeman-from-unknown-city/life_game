@@ -1,18 +1,16 @@
-//
-// Created by user on 25.11.2020.
-//
 #pragma once
 
 #include "../bmp/bmp.h"
 
-char**
-create_initial_game_field(const unsigned char* buf, BITMAPINFOHEADER* info);
+generation
+get_first_gen(const unsigned char* buf, BITMAPINFOHEADER* info);
 
 void
-free_game_field(char** game_field);
+free_gen(generation gen);
 
-char**
-generate_next_gen(char** game_field, BITMAPINFOHEADER*);
+generation
+generate_next_gen(generation gen, BITMAPINFOHEADER*);
 
 void
-pack(bmp_t* bmp, char** game_field);
+pack(bmp_t* bmp, generation gen);
+

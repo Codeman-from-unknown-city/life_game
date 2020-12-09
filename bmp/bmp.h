@@ -1,6 +1,3 @@
-//
-// Created by user on 25.11.2020.
-//
 #include <Windows.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -15,7 +12,8 @@ typedef struct {
 } bmp_t;
 
 bmp_t
-read_bmp(FILE*);
+read_bmp(const char* bmp_file_name);
 
 void
-write_bmp(FILE*, bmp_t*);
+write_bmp(const char* output_file_name, bmp_t*);
+

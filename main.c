@@ -17,3 +17,4 @@ main(int argc, char* argv[])
   write_bmp(a, &bmp);
   return 0;
 }
+
