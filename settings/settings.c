@@ -4,6 +4,18 @@
 #include <string.h>
 #include "settings.h"
 
+#define DAMP_FREQ_DEFAULT 1
+
+static settings_t
+create_settings()
+{
+  settings_t s;
+  s.input = s.output = NULL;
+  s.max_iter = MAX_ITER_DEFAULT;
+  s.dump_freq = DAMP_FREQ_DEFAULT;
+  return s;
+}
+
 struct cmd 
 {
   char* name;
@@ -55,7 +67,7 @@ print_err(enum PARSE_RESULT err_type)
 settings_t
 get_settings(int argc, char* argv[]) 
 {
-  settings_t s;
+  settings_t s create_settings();
   struct cmd cmd;
   memset(&cmd, 0, sizeof cmd);
   for (int i = 1; i < argc; i += 2)
@@ -69,4 +81,3 @@ get_settings(int argc, char* argv[])
     print_err(parse_res);
   return s;
 } 
-      
