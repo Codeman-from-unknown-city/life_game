@@ -20,6 +20,7 @@ read_bmp(const char* bmp_file_name)
   bmp.image = safe_malloc(bmp.info_header.biSizeImage);
   read_write_bmp_part(fread, bmp.image, bmp.info_header.biSizeImage, bmp_f, 
 		      "can't read image");
+  fclose(bmp_f);
   return bmp;
 }
 
@@ -37,5 +38,6 @@ write_bmp(const char* output_file_name, bmp_t* bmp)
   fseek(f, bmp->fheader.bfOffBits, SEEK_SET);
   read_write_bmp_part((read_write_fn) fwrite, bmp->image, bmp->info_header.biSizeImage, f, 
 		      "can't write image");
+  fclose(f);
 }
 
