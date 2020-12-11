@@ -35,7 +35,7 @@ itoa(int n, char s[])
 void build_output_fname(char* dest, const char* out_dir_path, uint64_t id, char* id_str) {
   strcpy(dest, out_dir_path);
   strcat(dest, "/");
-  itoa(id++, id_str);
+  itoa(id, id_str);
   strcat(dest, id_str);
   strcat(dest, ".bmp");
 }
