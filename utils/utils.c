@@ -1,5 +1,6 @@
-#include "utils.h"
 #include <string.h>
+#include <string.h>
+#include "utils.h"
 
 static void
 reverse(char s[])
@@ -14,7 +15,7 @@ reverse(char s[])
   }
 }
 
-void
+static void
 itoa(int n, char s[])
 {
   int i, sign;
@@ -30,4 +31,11 @@ itoa(int n, char s[])
     s[i++] = '-';
   s[i] = '\0';
   reverse(s);
+}
+void build_output_fname(char* dest, const char* out_dir_path, uint64_t id, char* id_str) {
+  strcpy(dest, out_dir_path);
+  strcat(dest, "/");
+  itoa(id++, id_str);
+  strcat(dest, id_str);
+  strcat(dest, ".bmp");
 }

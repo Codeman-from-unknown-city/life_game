@@ -1,5 +1,4 @@
 #include <sys/stat.h>
-#include <string.h>
 #include "bmp/bmp.h"
 #include "utils/safe/safe.h"
 #include "utils/utils.h"
@@ -28,12 +27,7 @@ main(int argc, char* argv[])
       if (--dump_freq_copy == 0)
         {
           pack(&bmp, next_gen);
-          strcpy(output_path, settings.output);
-          strcat(output_path, "/");
-          itoa(id++, id_string);
-          strcat(output_path, id_string);
-          strcat(output_path, ".bmp");
-          puts(output_path);
+          build_output_fname(output_path, settings.output, id++, id_string);
           write_bmp(output_path, &bmp);
           dump_freq_copy = settings.dump_freq;
         }
