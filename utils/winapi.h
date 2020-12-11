@@ -2,10 +2,10 @@
 
 #include <stdint.h>
 
-#define uint8  BYTE
-#define uint16 WORD
-#define uint32 DWORD
-#define	int32  LONG
+#define uint8_t  BYTE
+#define uint16_t WORD
+#define uint32_t DWORD
+#define	int32_t  LONG
 
 typedef struct tagBITMAPFILEHEADER {
   WORD  bfType;
