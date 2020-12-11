@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include <../utils/winapi.h>
 #include <stdbool.h>
 #include "field.h"
 #include "../utils/safe/safe.h"
