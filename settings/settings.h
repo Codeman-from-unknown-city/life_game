@@ -4,8 +4,8 @@
 
 typedef struct 
 {
-  uint64 max_iter;
-  uint64 dunp_freq;
+  uint64_t max_iter;
+  uint64_t dump_freq;
   char* input;
   char* output;
 } settings;
