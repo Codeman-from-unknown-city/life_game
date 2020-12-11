@@ -7,6 +7,7 @@
 
 #define DIR_PERMISSION 0777
 #define MAX_NAME 256
+#define MAX_ID_LEN 21
 
 int
 main(int argc, char* argv[])
@@ -15,7 +16,7 @@ main(int argc, char* argv[])
   mkdir(settings.output, DIR_PERMISSION);
   char output_path[MAX_NAME];
   uint64_t id = 0;
-  char id_string[200];
+  char id_string[MAX_ID_LEN];
   bmp_t bmp = read_bmp(settings.input);
   uint64_t max_iter_copy = settings.max_iter;
   uint64_t dump_freq_copy = settings.dump_freq;
