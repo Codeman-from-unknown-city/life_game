@@ -11,7 +11,7 @@ struct cmd
 };  
 
 static void
-parse_cmd_line_option(settings* s, struct cmd* cmd)
+parse_cmd_line_option(settings_t* s, struct cmd* cmd)
 {
   if (!strcmp(cmd->name, "input"))
     s->input = cmd->val;
@@ -31,7 +31,7 @@ enum PARSE_RESULT
 };
 
 static enum PARSE_RESULT
-check_settings(settings* s)
+check_settings(settings_t* s)
 {
   if (s->input == NULL || s->output == NULL)
     return MISSING_REQUIRED_PARAMS;
@@ -52,10 +52,10 @@ print_err(enum PARSE_RESULT err_type)
   exit(1);
 }
  
-settings
+settings_t
 get_settings(int argc, char* argv[]) 
 {
-  settings s;
+  settings_t s;
   struct cmd cmd;
   memset(&cmd, 0, sizeof cmd);
   for (int i = 1; i < argc; i += 2)
