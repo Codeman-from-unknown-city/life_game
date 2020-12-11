@@ -6,6 +6,7 @@ typedef uint16_t WORD;
 typedef uint32_t DWORD;
 typedef	int32_t  LONG;
 
+#pragma pack(push, 1)
 typedef struct tagBITMAPFILEHEADER {
   WORD  bfType;
   DWORD bfSize;
@@ -13,7 +14,9 @@ typedef struct tagBITMAPFILEHEADER {
   WORD  bfReserved2;
   DWORD bfOffBits;
 } BITMAPFILEHEADER, *LPBITMAPFILEHEADER, *PBITMAPFILEHEADER;
+#pragma pack(pop)
 
+#pragma pack(push, 1)
 typedef struct tagBITMAPINFOHEADER {
   DWORD biSize;
   LONG  biWidth;
@@ -27,4 +30,5 @@ typedef struct tagBITMAPINFOHEADER {
   DWORD biClrUsed;
   DWORD biClrImportant;
 } BITMAPINFOHEADER, *PBITMAPINFOHEADER;
+#pragma pack(pop)
 
