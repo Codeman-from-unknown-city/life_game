@@ -2,6 +2,8 @@
 
 #include "../bmp/bmp.h"
 
+typedef char** generation;
+
 generation
 get_first_gen(const unsigned char* buf, BITMAPINFOHEADER* info);
 

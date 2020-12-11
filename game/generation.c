@@ -3,8 +3,6 @@
 #include "generation.h"
 #include "../utils/safe/safe.h"
 
-typedef char** generation;
-
 static char**
 create_2d_char_arr(int rows, int columns)
 {
