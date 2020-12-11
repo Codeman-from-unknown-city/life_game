@@ -67,7 +67,7 @@ print_err(enum PARSE_RESULT err_type)
 settings_t
 get_settings(int argc, char* argv[]) 
 {
-  settings_t s create_settings();
+  settings_t s = create_settings();
   struct cmd cmd;
   memset(&cmd, 0, sizeof cmd);
   for (int i = 1; i < argc; i += 2)
